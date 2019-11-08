@@ -26,6 +26,7 @@ function init() {
     
     renderer.setSize( sceneWidth, sceneHeight );
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild( renderer.domElement );
 
     window.addEventListener( 'resize', onWindowResize, false );
@@ -40,6 +41,8 @@ function init() {
                             } );
     cube = new THREE.Mesh( geometry, material );
     cube.receiveShadow = true;
+    cube.castShadow = true;
+    //cube.position.set(0, 1, -1);
     scene.add( cube );
 
 
@@ -69,6 +72,7 @@ function init() {
     bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
     bulbLight.position.set( 1, 2, 0 );
     bulbLight.castShadow = true;
+
     scene.add( bulbLight );
 
 }
@@ -83,6 +87,8 @@ function animate() {
 
     var time = Date.now() * 0.0005;
     bulbLight.position.y = Math.cos( time ) * 0.75 + 1.25;
+    bulbLight.position.x = Math.sin( time ) * 2 - 1.25;
+    bulbLight.position.z = Math.cos( time ) * 0.25 + 1;
 
     renderer.render( scene, camera );
 }
