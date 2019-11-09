@@ -55,7 +55,7 @@ function init() {
     floorMat = new THREE.MeshPhysicalMaterial( {
         roughness: 0.8,
         color: 0x00ffff,
-        metalness: 1,
+        metalness: 0.5,
         //bumpScale: 0.0005
     } );
     var floorGeometry = new THREE.PlaneBufferGeometry( 10, 5 );
@@ -79,6 +79,11 @@ function init() {
     bulbLight.castShadow = true;
 
     scene.add( bulbLight );
+
+
+    // add ambient light
+    let ambientLight = new THREE.AmbientLight( 0x333333 );
+    scene.add(ambientLight);
 
 }
 function animate() {
