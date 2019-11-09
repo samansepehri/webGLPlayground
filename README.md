@@ -6,5 +6,6 @@ This is my playground repository for webGL and three.js examples.
 2. Create and run a local server: e.g. `ruby -run -e httpd . -p 8080`
 
 ## Current Progress
-<img src="./img/currentScene.png" width=50% height=50%>
+<img src="./img/currentScene3.png" width=50% height=50%>
 <img src="./img/currentScene2.png" width=50% height=50%>
+<img src="./img/currentScene.png" width=50% height=50%>
