@@ -1,9 +1,8 @@
 import * as THREE from './three.module.js';
+import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
 
-var scene;
+var scene, camera, controls, renderer;
 var sceneWidth, sceneHeight;
-var camera;
-var renderer;
 var geometry, bulbLight;
 var material, floorMat, bulbMat;
 var cube;
@@ -30,6 +29,12 @@ function init() {
     document.body.appendChild( renderer.domElement );
 
     window.addEventListener( 'resize', onWindowResize, false );
+
+    // add mouse control
+    controls = new OrbitControls( camera, renderer.domElement );
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
 
     geometry = new THREE.BoxGeometry( 1, 1, 1 );
     //material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -91,6 +96,9 @@ function animate() {
     bulbLight.position.z = Math.cos( time ) * 0.25 + 1;
 
     renderer.render( scene, camera );
+
+    controls.update(); // required because damping is enabled
+
 }
 
 
