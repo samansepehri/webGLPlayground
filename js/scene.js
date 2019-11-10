@@ -1,9 +1,11 @@
 import * as THREE from './three.module.js';
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { TeapotBufferGeometry } from '../node_modules/three/examples/jsm/geometries/TeapotBufferGeometry.js';
 
 var scene, camera, controls, renderer;
 var sceneWidth, sceneHeight;
 var geometry, bulbLight;
+var teapot, teaTess = 10, teapotSize = .7;
 var material, floorMat, bulbMat;
 var cube;
 var t = 0;
@@ -12,6 +14,28 @@ init()
 
 animate();
 
+
+// Whenever the teapot changes, the scene is rebuilt from scratch (not much to it).
+function createNewTeapot() {
+    if ( teapot !== undefined ) {
+        teapot.geometry.dispose();
+        scene.remove( teapot );
+    }
+    var teapotGeometry = new TeapotBufferGeometry( teapotSize,
+        teaTess );
+    var teaMat = new THREE.MeshPhysicalMaterial( {
+            color: 0xff3300,
+            metalness: .6,
+            roughness: 0.1,
+            clearcoat: 0
+        } );
+    teapot = new THREE.Mesh(
+        teapotGeometry, teaMat);
+    teapot.rotation.x = Math.PI / 2.0;
+    teapot.position.x -= 2;
+    teapot.castShadow = true;
+    scene.add( teapot );
+}
 
 function init() {
     scene = new THREE.Scene();
@@ -45,30 +69,35 @@ function init() {
                                 clearcoat: 1.0
                             } );
     cube = new THREE.Mesh( geometry, material );
+    cube.position.x += 1;
     cube.receiveShadow = true;
     cube.castShadow = true;
+
     //cube.position.set(0, 1, -1);
     scene.add( cube );
 
 
     // add floor to the scene
     floorMat = new THREE.MeshPhysicalMaterial( {
-        roughness: 0.8,
-        color: 0x00ffff,
-        metalness: 0.5,
+        roughness: 0.6,
+        color: 0x006655,
+        metalness: .1,
         //bumpScale: 0.0005
     } );
     var floorGeometry = new THREE.PlaneBufferGeometry( 10, 5 );
     var floorMesh = new THREE.Mesh( floorGeometry, floorMat );
     floorMesh.receiveShadow = true;
-    floorMesh.rotation.x = - Math.PI / 4.0;
-    floorMesh.position.z -= 1;
+    //floorMesh.rotation.x = - Math.PI / 4.0;
+    floorMesh.position.z -= 0.7;
     scene.add( floorMesh );
 
+    // add teapot to the scene
+
+    createNewTeapot();
 
     // add point light to the scene
     var bulbGeometry = new THREE.SphereBufferGeometry( 0.1, 16, 8 );
-    bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+    bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 1 );
     bulbMat = new THREE.MeshStandardMaterial( {
         emissive: 0xffffee,
         emissiveIntensity: 10,
@@ -80,6 +109,10 @@ function init() {
 
     scene.add( bulbLight );
 
+    // add directional light
+    var directionalLight = new THREE.DirectionalLight( 0xffbbbb, .4 );
+    directionalLight.position.set(1, 0, 1);
+    scene.add( directionalLight );
 
     // add ambient light
     let ambientLight = new THREE.AmbientLight( 0x333333 );
@@ -96,9 +129,9 @@ function animate() {
     floorMat.needsUpdate = true;
 
     var time = Date.now() * 0.0005;
-    bulbLight.position.y = Math.cos( time ) * 0.75 + 1.25;
-    bulbLight.position.x = Math.sin( time ) * 2 - 1.25;
-    bulbLight.position.z = Math.cos( time ) * 0.25 + 1;
+    bulbLight.position.y = Math.cos( time ) * 2;
+    bulbLight.position.x = Math.sin( time ) * 2 + .25;
+    bulbLight.position.z = 2; //Math.cos( time ) * 0.25 + 2;
 
     renderer.render( scene, camera );
 
