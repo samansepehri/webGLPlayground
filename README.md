@@ -8,11 +8,13 @@ This is my playground repository for webGL and three.js examples.
 ## Current Features
 - Point Light
 - Directional Light
+- Spot Light
 - Shadow Casting
 - Controlable Scene by mouse
 
 
 ## Current Progress
+<img src="./img/currentScene5.png" width=50% height=50%>
 <img src="./img/currentScene4.png" width=50% height=50%>
 <img src="./img/currentScene3.png" width=50% height=50%>
 <img src="./img/currentScene2.png" width=50% height=50%>
