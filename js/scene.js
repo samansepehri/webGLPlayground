@@ -30,7 +30,7 @@ function createNewTeapot() {
             clearcoat: 0
         } );
     teapot = new THREE.Mesh(
-        teapotGeometry, teaMat);
+        teapotGeometry, /*teaMat*/ new THREE.MeshNormalMaterial());
     teapot.rotation.x = Math.PI / 2.0;
     teapot.position.x -= 2;
     teapot.castShadow = true;
@@ -106,17 +106,27 @@ function init() {
     bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
     bulbLight.position.set( 1, 2, 0 );
     bulbLight.castShadow = true;
-
+    bulbLight.penumbra = 0.8;
     scene.add( bulbLight );
 
     // add directional light
     var directionalLight = new THREE.DirectionalLight( 0xffbbbb, .4 );
     directionalLight.position.set(1, 0, 1);
-    scene.add( directionalLight );
+    //scene.add( directionalLight );
 
     // add ambient light
     let ambientLight = new THREE.AmbientLight( 0x333333 );
     scene.add(ambientLight);
+
+    // add spot light
+    let spotLight = new THREE.SpotLight( 0xb4e7f2, 0.8 );
+    spotLight.angle = -Math.PI / 4;
+    spotLight.penumbra = 0.2;
+    spotLight.position.set( -3, 0, 1 );
+    spotLight.castShadow = true;
+
+    spotLight.add( new THREE.Mesh( new THREE.SphereBufferGeometry(0.1, 10, 2), new THREE.MeshBasicMaterial({color: 0x0000FF}) ) );
+    scene.add(spotLight);
 
 }
 function animate() {
