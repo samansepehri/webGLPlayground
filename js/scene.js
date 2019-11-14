@@ -52,15 +52,9 @@ function createNewTeapot() {
     
     teapot = new THREE.Mesh(
         teapotGeometry, cubeMaterial /*new THREE.MeshNormalMaterial()*/);
-    teapot.rotation.x = Math.PI / 2.0;
     teapot.position.x -= 2;
     teapot.castShadow = true;
     scene.add( teapot );    
-    
-    
-
-
-
 
 }
 
@@ -86,6 +80,7 @@ function init() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
+    var group = new THREE.Group();
 
     geometry = new THREE.BoxGeometry( 1, 1, 1 );
     //material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -97,11 +92,12 @@ function init() {
                             } );
     cube = new THREE.Mesh( geometry, material );
     cube.position.x += 1;
+    cube.position.z += .2;
     cube.receiveShadow = true;
     cube.castShadow = true;
 
     //cube.position.set(0, 1, -1);
-    scene.add( cube );
+    group.add(cube);
 
 
     // add floor to the scene
@@ -111,12 +107,12 @@ function init() {
         metalness: .1,
         //bumpScale: 0.0005
     } );
-    var floorGeometry = new THREE.PlaneBufferGeometry( 10, 5 );
+    var floorGeometry = new THREE.PlaneBufferGeometry( 8, 3 );
     var floorMesh = new THREE.Mesh( floorGeometry, floorMat );
     floorMesh.receiveShadow = true;
     //floorMesh.rotation.x = - Math.PI / 4.0;
     floorMesh.position.z -= 0.7;
-    scene.add( floorMesh );
+    group.add(floorMesh);
 
     // add teapot to the scene
 
@@ -134,7 +130,8 @@ function init() {
     bulbLight.position.set( 1, 2, 0 );
     bulbLight.castShadow = true;
     bulbLight.penumbra = 0.8;
-    scene.add( bulbLight );
+    group.add( bulbLight );
+
 
     // add directional light
     var directionalLight = new THREE.DirectionalLight( 0xffbbbb, .4 );
@@ -142,18 +139,22 @@ function init() {
     //scene.add( directionalLight );
 
     // add ambient light
-    let ambientLight = new THREE.AmbientLight( 0x333333 );
-    scene.add(ambientLight);
+    let ambientLight = new THREE.AmbientLight( 0x777777 );
+    group.add(ambientLight);
 
     // add spot light
-    let spotLight = new THREE.SpotLight( 0xb4e7f2, 0.8 );
+    let spotLight = new THREE.SpotLight( 0xb4e7f2, 0.9 );
     spotLight.angle = -Math.PI / 4;
     spotLight.penumbra = 0.2;
     spotLight.position.set( -3, 0, 1 );
     spotLight.castShadow = true;
 
     spotLight.add( new THREE.Mesh( new THREE.SphereBufferGeometry(0.1, 10, 2), new THREE.MeshBasicMaterial({color: 0x0000FF}) ) );
-    scene.add(spotLight);
+    group.add(spotLight);
+
+
+    group.rotation.x -= Math.PI / 2.0;
+    scene.add(group);
 
 }
 function animate() {
