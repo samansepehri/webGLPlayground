@@ -11,6 +11,7 @@ This is my playground repository for webGL and three.js examples.
 - Spot Light
 - Shadow Casting
 - Controlable Scene by mouse
+- Cube map
 
 
 ## Current Progress
