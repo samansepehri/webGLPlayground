@@ -23,18 +23,45 @@ function createNewTeapot() {
     }
     var teapotGeometry = new TeapotBufferGeometry( teapotSize,
         teaTess );
+
+    // cube mapping
+    var path = '../textures/cube/Park2/';
+    var format = '.jpg';
+    var urls = [
+        path + 'posx' + format, path + 'negx' + format,
+        path + 'posy' + format, path + 'negy' + format,
+        path + 'posz' + format, path + 'negz' + format
+    ];
+    var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+    reflectionCube.format = THREE.RGBFormat;
+
+    scene.background = reflectionCube;
+
+
     var teaMat = new THREE.MeshPhysicalMaterial( {
-            color: 0xff3300,
-            metalness: .6,
-            roughness: 0.1,
-            clearcoat: 0
-        } );
+        color: 0xff3300,
+        metalness: .1,
+        roughness: 0.5,
+        clearcoat: 0,
+        envMap: reflectionCube,
+        combine: THREE.MixOperation,
+        reflectivity: 0.9
+    } );
+
+    var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xff6600, envMap: reflectionCube, reflectivity: 0.9 } );
+    
     teapot = new THREE.Mesh(
-        teapotGeometry, /*teaMat*/ new THREE.MeshNormalMaterial());
+        teapotGeometry, cubeMaterial /*new THREE.MeshNormalMaterial()*/);
     teapot.rotation.x = Math.PI / 2.0;
     teapot.position.x -= 2;
     teapot.castShadow = true;
-    scene.add( teapot );
+    scene.add( teapot );    
+    
+    
+
+
+
+
 }
 
 function init() {
