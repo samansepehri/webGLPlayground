@@ -90,6 +90,13 @@ function init() {
                                 roughness: 0.1,
                                 clearcoat: 1.0
                             } );
+
+    shaderMat = new THREE.ShaderMaterial( {
+            uniforms: { },
+            vertexShader: {},
+            fragmentShader: {}
+    });
+    
     cube = new THREE.Mesh( geometry, material );
     cube.position.x += 1;
     cube.position.z += .2;
