@@ -9,6 +9,8 @@ var teapot, teaTess = 10, teapotSize = .7;
 var material, floorMat, bulbMat;
 var cube;
 var t = 0;
+var shaderMat;
+var uniforms;
 
 init()
 
@@ -91,21 +93,21 @@ function init() {
                                 clearcoat: 1.0
                             } );
 
-    var xx = .5;
-    let shaderMat = new THREE.ShaderMaterial( {
-            uniforms: { test: {value: xx}},
+    uniforms = { "test": {value: new THREE.Vector3()}};
+    shaderMat = new THREE.ShaderMaterial( {
+            uniforms: uniforms,
             vertexShader: `
-            uniform float test;
+            uniform vec3 test;
             varying vec3 vColor;
 			void main() {
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 vColor = position;
 			}`,
             fragmentShader: `
-            uniform float test;
+            uniform vect test;
             varying vec3 vColor;
             void main() {
-                gl_FragColor = vec4(vColor, 1.0);// vec4(1, test, test, 1.0);
+                gl_FragColor = vec4(test, 1.0);
               }`
     });
     
@@ -189,7 +191,11 @@ function animate() {
     bulbLight.position.y = Math.cos( time ) * 2;
     bulbLight.position.x = Math.sin( time ) * 2 + .25;
     bulbLight.position.z = 2; //Math.cos( time ) * 0.25 + 2;
-
+    
+    var colorx = (Math.sin(Data.now())+1)/2;
+    var colory = (Math.sin(Data.now()+137)+1)/2;
+    var colorz = (Math.sin(Data.now()+24)+1)/2;
+    uniforms["test"].value = new THREE.Vector3(colorx, colory, colorz);
     renderer.render( scene, camera );
 
     controls.update(); // required because damping is enabled
