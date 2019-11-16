@@ -91,13 +91,25 @@ function init() {
                                 clearcoat: 1.0
                             } );
 
-    shaderMat = new THREE.ShaderMaterial( {
-            uniforms: { },
-            vertexShader: {},
-            fragmentShader: {}
+    var xx = .5;
+    let shaderMat = new THREE.ShaderMaterial( {
+            uniforms: { test: {value: xx}},
+            vertexShader: `
+            uniform float test;
+            out vec4 vColor;
+			void main() {
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                vColor = gl_Position;
+			}`,
+            fragmentShader: `
+            uniform float test;
+            in vec4 vColor;
+            void main() {
+                gl_FragColor = vColor;// vec4(1, test, test, 1.0);
+              }`
     });
     
-    cube = new THREE.Mesh( geometry, material );
+    cube = new THREE.Mesh( geometry, shaderMat );
     cube.position.x += 1;
     cube.position.z += .2;
     cube.receiveShadow = true;
