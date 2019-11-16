@@ -96,16 +96,16 @@ function init() {
             uniforms: { test: {value: xx}},
             vertexShader: `
             uniform float test;
-            out vec4 vColor;
+            varying vec3 vColor;
 			void main() {
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                vColor = gl_Position;
+                vColor = position;
 			}`,
             fragmentShader: `
             uniform float test;
-            in vec4 vColor;
+            varying vec3 vColor;
             void main() {
-                gl_FragColor = vColor;// vec4(1, test, test, 1.0);
+                gl_FragColor = vec4(vColor, 1.0);// vec4(1, test, test, 1.0);
               }`
     });
     
