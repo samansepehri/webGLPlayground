@@ -104,7 +104,7 @@ function init() {
                 vColor = position;
 			}`,
             fragmentShader: `
-            uniform vect test;
+            uniform vec3 test;
             varying vec3 vColor;
             void main() {
                 gl_FragColor = vec4(test, 1.0);
@@ -192,9 +192,9 @@ function animate() {
     bulbLight.position.x = Math.sin( time ) * 2 + .25;
     bulbLight.position.z = 2; //Math.cos( time ) * 0.25 + 2;
     
-    var colorx = (Math.sin(Data.now())+1)/2;
-    var colory = (Math.sin(Data.now()+137)+1)/2;
-    var colorz = (Math.sin(Data.now()+24)+1)/2;
+    var colorx = (Math.sin(time)+1)/2;
+    var colory = (Math.cos(time)+1)/2;
+    var colorz = (Math.sin(time*2)+1)/2;
     uniforms["test"].value = new THREE.Vector3(colorx, colory, colorz);
     renderer.render( scene, camera );
 
